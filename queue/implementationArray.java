@@ -1,5 +1,5 @@
 package queue;
-public class implementation {
+public class implementationArray {
     static class queue{
         static int[] arr;
         static int size;
