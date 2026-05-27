@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -183,6 +184,58 @@ public class buildAndTraversal {
             }
             return true;
         }
+
+        static class topViewInfo {
+            Node node;
+            int hd;
+
+            topViewInfo(Node node, int hd) {
+                this.node = node;
+                this.hd = hd;
+            }
+
+        }
+
+        public static void topView(Node root) {
+            // Level order traversal
+            Queue<topViewInfo> q = new LinkedList<>();
+            HashMap<Integer, Node> h = new HashMap<>();
+            int max = 0, min = 0;
+            q.add(new topViewInfo(root, 0));
+            q.add(null);
+
+            while (!q.isEmpty()) {
+                topViewInfo currNode = q.remove();
+                if (currNode == null) {
+
+                    if (q.isEmpty()) {
+                        break;
+                    } else {
+                        q.add(null);
+
+                    }
+                } else {
+                    if (!h.containsKey(currNode.hd)) {
+                        h.put(currNode.hd, currNode.node);
+                    }
+                    if (currNode.node.left != null) {
+                        q.add(new topViewInfo(currNode.node.left, currNode.hd - 1));
+                        min = Math.min(min, currNode.hd - 1);
+                    }
+                    if (currNode.node.right != null) {
+                        q.add(new topViewInfo(currNode.node.right, currNode.hd + 1));
+                        max = Math.max(max, currNode.hd + 1);
+                    }
+                }
+
+            }
+
+            // printing
+            for (int i = min; i <= max; i++) {
+                System.out.println(h.get(i).data);
+            }
+
+        }
     }
 
     @SuppressWarnings("static-access")
@@ -215,11 +268,11 @@ public class buildAndTraversal {
         // System.out.println( b.diameter2(n).dia);
 
         // defining new subtree
-        Node n1 = new Node(2);
-        n1.left = new Node(4);
-        n1.right = new Node(5);
+        // Node n1 = new Node(2);
+        // n1.left = new Node(4);
+        // n1.right = new Node(5);
 
-        System.out.println(b.isSubTree(n, n1));
-
+        // System.out.println(b.isSubTree(n, n1));
+        b.topView(n);
     }
 }
