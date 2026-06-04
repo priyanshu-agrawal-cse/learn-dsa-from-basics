@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -236,6 +237,83 @@ public class buildAndTraversal {
             }
 
         }
+
+
+
+        public static void klevel(Node root, int currlevel,int k){
+            if(root==null){
+                return;
+            }
+            if(currlevel==k){
+                System.out.println(root.data);
+                return;
+            }
+            klevel(root.left, currlevel+1, k);
+            klevel(root.right, currlevel+1, k);
+        }
+
+
+
+
+
+
+        public static Node lowestCommonAnsister(Node root,int n1 ,int n2){
+            ArrayList<Node> path1 = new ArrayList<>();
+            ArrayList<Node> path2 = new ArrayList<>();
+
+            getPath(root,n1,path1);
+            getPath(root,n2,path2);
+
+            //now doing 2md step iteration
+            int i=0;
+            for(;i<path1.size()&&i<path2.size();i++){
+                if(path1.get(i)!=path2.get(i)){
+                    break;
+                }
+            }
+            Node lca = path1.get(i-1);
+            return lca;
+        }
+
+        public static boolean getPath(Node root,int n,ArrayList<Node> path){
+            if(root==null){
+                return false;
+            }
+            path.add(root);
+            if(root.data==n){
+                return true;
+            }
+            boolean leftSubTree = getPath(root.left, n, path);
+            boolean rightSubTree = getPath(root.right, n, path);
+
+            if(leftSubTree || rightSubTree){
+                return true;
+            }
+            path.remove(path.size()-1);
+            return false;
+        }
+
+
+
+
+
+        public static Node lca2(Node root , int n1 , int n2){
+            if(root==null||root.data== n1||root.data==n2){
+                return root;
+            }
+
+            Node leftLca = lca2(root.left, n1, n2);
+            Node rightLca = lca2(root.right, n1, n2);
+
+            if(rightLca==null){
+                return leftLca;
+            }
+            if(leftLca==null){
+                return rightLca;
+            }
+
+            return root;
+        }
     }
 
     @SuppressWarnings("static-access")
@@ -273,6 +351,13 @@ public class buildAndTraversal {
         // n1.right = new Node(5);
 
         // System.out.println(b.isSubTree(n, n1));
-        b.topView(n);
+        // b.topView(n);
+
+
+
+        // b.klevel(n, 1, 3);
+
+        // System.out.println(b.lowestCommonAnsister(n, 4, 6).data);
+        System.out.println(b.lca2(n, 4,5).data);
     }
 }
