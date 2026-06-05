@@ -314,6 +314,75 @@ public class buildAndTraversal {
 
             return root;
         }
+
+
+        public static int minDistanceBtwNode(Node root , int n1,int n2){
+            Node lca = lca2(root, n1, n2);
+            return(finfDistancs(lca, n1)+finfDistancs(lca, n2));
+
+        }
+        public static int finfDistancs(Node root , int n1){
+            if(root==null){
+                return -1;
+
+            }
+            if(root.data==n1){
+                return 0;
+            }
+            int leftD = finfDistancs(root.left, n1);
+            int rightD = finfDistancs(root.right, n1);
+
+            if(leftD!=-1){
+                return leftD+1;
+            }
+            if(rightD!=-1){
+                return rightD+1;
+            }
+            return -1;
+        }
+
+
+
+
+        public static int kThAncestor(Node root , int k,int findNode){
+            if(root==null){
+                return -1;
+
+            }
+            if(root.data==findNode){
+                return 0;
+            }
+            int left = kThAncestor(root.left, k, findNode);
+            int right = kThAncestor(root.right, k, findNode);
+            
+            if(left!=-1){
+                if(left+1==k){
+                    System.out.println(root.data);
+                }
+                return left+1;
+            }else if(right!=-1){
+                 if(right+1==k){
+                    System.out.println(root.data);
+                }
+                return right+1;
+            }else{
+                return -1;
+            }
+        }
+
+
+
+        public static int sumTree(Node root){
+            if(root==null){
+                return 0;
+            }
+            int leftSum = sumTree(root.left);
+            int rightSum = sumTree(root.right);
+
+            int data= root.data;
+            root.data = leftSum+rightSum;
+            return data+root.data;
+        }
     }
 
     @SuppressWarnings("static-access")
@@ -358,6 +427,19 @@ public class buildAndTraversal {
         // b.klevel(n, 1, 3);
 
         // System.out.println(b.lowestCommonAnsister(n, 4, 6).data);
-        System.out.println(b.lca2(n, 4,5).data);
+        // System.out.println(b.lca2(n, 4,5).data);
+        // System.out.println(b.minDistanceBtwNode(n, 4, 5));
+
+        // System.out.println(b.kThAncestor(n, 2 , 4));
+        // b.kThAncestor(n, 2 , 4);
+
+
+
+
+        b.preOrder(n);
+        System.out.println();
+        b.sumTree(n);
+        b.preOrder(n);
+
     }
 }
